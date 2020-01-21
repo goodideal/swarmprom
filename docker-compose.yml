@@ -146,6 +146,19 @@ services:
         reservations:
           memory: 64M
 
+
+  blackbox-exporter:
+    image: prom/blackbox-exporter:v0.16.0
+    networks:
+      - net
+    deploy:
+      mode: global
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+
   prometheus:
     image: stefanprodan/swarmprom-prometheus:v2.5.0
     networks:
