@@ -22,11 +22,11 @@ after_success:
     else
     docker login -u "$DOCKER_USER" -p "$DOCKER_PASS";
     docker tag goodideal/swarmprom-prometheus:$TRAVIS_BUILD_NUMBER goodideal/swarmprom-prometheus:v2.17.1;
-    docker push goodideal/swarmprom-prometheus:v2.15.2;
+    docker push goodideal/swarmprom-prometheus:v2.17.1;
     docker tag goodideal/swarmprom-node-exporter:$TRAVIS_BUILD_NUMBER goodideal/swarmprom-node-exporter:v0.18.1;
     docker push goodideal/swarmprom-node-exporter:v0.18.1;
     docker tag goodideal/swarmprom-alertmanager:$TRAVIS_BUILD_NUMBER goodideal/swarmprom-alertmanager:v0.20.0;
     docker push goodideal/swarmprom-alertmanager:v0.20.0;
     docker tag goodideal/swarmprom-grafana:$TRAVIS_BUILD_NUMBER goodideal/swarmprom-grafana:6.7.1;
-    docker push goodideal/swarmprom-grafana:6.5.3;
+    docker push goodideal/swarmprom-grafana:6.7.1;
     fi
