@@ -41,18 +41,44 @@ scrape_configs:
       type: 'A'
       port: 9100
 
-  - job_name: 'blackbox'
+
+  - job_name: swarm-service-endpoints
+  file_sd_configs:
+    - files:
+      - /etc/swarm-endpoints/swarm-endpoints.json
+  
+  - job_name: 'http_prob'
     dns_sd_configs:
       - names:
-        - 'tasks.blackbox'
+        - 'tasks.http_prob'
         type: 'A'
         port: 9115
     metrics_path: /probe
     params:
       module: [http_2xx]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://www.baidu.com
+    file_sd_configs:
+      - files:
+        - http_prob.yml
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115  # The blackbox exporter's real hostname:port.
+
+  - job_name: 'icmp_prob'
+    dns_sd_configs:
+      - names:
+        - 'tasks.icmp_local'
+        type: 'A'
+        port: 9115
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    file_sd_configs:
+      - files:
+        - icmp_prob.yml
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
